@@ -21,7 +21,7 @@ buildscript {
         materialComponentsVersion = '22973ff10305397bfc72fed41684175fee8aeefb'
         mavenPluginVersion = '2.1'
         preferenceVersion = '1.1.1'
-        zxingEmbeddedVersion = '3.6.0'
+        zxingEmbeddedVersion = '4.1.0'
 
         groupName = 'com.wireguard.android'
     }
