@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        activityVersion = '1.2.0-alpha08'
+        activityVersion = '1.2.0-beta01'
         agpVersion = '4.0.1'
         annotationsVersion = '1.1.0'
         appcompatVersion = '1.2.0'
