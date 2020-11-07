@@ -30,7 +30,14 @@ git clone https://theradcolor:${GITHUB_TOKEN}@github.com/SensiPeeps/app_keystore
 mv app_keystores/sensipeeps_release.jks .
 mv app_keystores/sp_wg_keystore.properties keystore.properties
 
-./gradlew assembleRelease
+export JOBS="$((`grep -c '^processor' /proc/cpuinfo`))"
+
+echo "org.gradle.configureondemand=true" >> local.properties
+echo "org.gradle.daemon=true" >> local.properties
+echo "org.gradle.parallel=true" >> local.properties
+echo "org.gradle.workers.max=${JOBS}" >> local.properties
+
+./gradlew assembleRelease --parallel --max-workers=${JOBS}
 
 if [ -f ui/build/outputs/apk/release/ui-release.apk ]; then
     cp ui/build/outputs/apk/release/ui-release.apk ui/build/outputs/apk/release/WireGuardX-${DATE}.apk
