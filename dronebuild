@@ -26,18 +26,23 @@ curl -s -X POST "https://api.telegram.org/bot${TG_BOT_API}/sendMessage" -d chat_
      -d "parse_mode=markdownV2" \
      -d text="⚒️ [*Building*](${DRONE_URL}${DRONE_BUILD_NUMBER}) with HEAD as [*$(echo $HEAD_COMMIT | cut -c1-8)*](${GITHUB_URL}${HEAD_COMMIT}) ⚒️"
 
-./gradlew assembleDebug
+git clone https://theradcolor:${GITHUB_TOKEN}@github.com/SensiPeeps/app_keystores -b master
+mv app_keystores/sensipeeps_release.jks .
+mv app_keystores/sp_wg_keystore.properties keystore.properties
 
-if [ -f ui/build/outputs/apk/debug/ui-debug.apk ]; then
-    cp ui/build/outputs/apk/debug/ui-debug.apk ui/build/outputs/apk/debug/WireGuardX-debug-${DATE}.apk
-    cd ui/build/outputs/apk/debug
-    APK=$(echo WireGuardX-debug-*.apk)
+./gradlew assembleRelease
+
+if [ -f ui/build/outputs/apk/release/ui-release.apk ]; then
+    cp ui/build/outputs/apk/release/ui-release.apk ui/build/outputs/apk/release/WireGuardX-${DATE}.apk
+    cd ui/build/outputs/apk/release/
+    APK=$(echo WireGuardX-*.apk)
+    
     curl -F document=@"${APK}" "https://api.telegram.org/bot${TG_BOT_API}/sendDocument" \
          -F chat_id="-1001142276906"  \
          -F "disable_web_page_preview=true" \
          -F "parse_mode=html" \
          -F caption="⭕️ <b>CI build completed successfully!</b>"
-    rm -rf app/build/outputs/apk
+    rm -rf ui/build/outputs/apk
 else
     curl -s -X POST "https://api.telegram.org/bot${TG_BOT_API}/sendMessage" -d chat_id="-1001142276906" \
          -d "disable_web_page_preview=true" \
