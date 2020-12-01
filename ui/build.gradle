@@ -14,7 +14,7 @@ android {
     buildFeatures.dataBinding = true
     buildFeatures.viewBinding = true
     defaultConfig {
-        applicationId 'com.wireguard.android'
+        applicationId 'com.wireguardx.android'
         minSdkVersion 21
         targetSdkVersion 30
         versionCode wireguardVersionCode
