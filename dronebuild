@@ -28,11 +28,12 @@ if [ -f ui/build/outputs/apk/release/ui-release.apk ]; then
     cp ui/build/outputs/apk/release/ui-release.apk ui/build/outputs/apk/release/WireGuardX-${DATE}.apk
     cd ui/build/outputs/apk/release/
     APK=$(echo WireGuardX-*.apk)
+    SHA256=$(sha256sum ${APK} | cut -d' ' -f1)
     curl -F document=@"${APK}" "https://api.telegram.org/bot${TG_BOT_API}/sendDocument" \
          -F chat_id="-1001142276906"  \
          -F "disable_web_page_preview=true" \
          -F "parse_mode=html" \
-         -F caption="⭕️ <b>CI build completed successfully!</b>"
+         -F caption="⭕️ <b>CI build completed successfully</b> | <b>SHA256 checksum</b> • <code>${SHA256}</code>"
     rm -rf ui/build/outputs/apk
 else
     curl -s -X POST "https://api.telegram.org/bot${TG_BOT_API}/sendMessage" -d chat_id="-1001142276906" \
